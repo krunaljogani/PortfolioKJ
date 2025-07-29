@@ -11,7 +11,17 @@ tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
 with tabs[0]:
     st.header("🔐 Jainam Accounts")
-    df = pd.read_excel("data/jainam_accounts.xlsx")
+    import streamlit as st
+    import pandas as pd
+    
+    accounts = st.secrets["jainam_accounts"]
+    
+    data = []
+    for code in accounts:
+        info = accounts[code]
+        data.append({"client_code": code, "password": info["password"], "dob": info["dob"]})
+
+    df = pd.DataFrame(data)
     selected_user = st.selectbox("Select Jainam Account", df["client_code"])
     creds = df[df["client_code"] == selected_user].iloc[0]
     token = jainam.login_jainam(creds["client_code"], creds["password"], creds["dob"])
