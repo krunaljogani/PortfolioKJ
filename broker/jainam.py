@@ -1,4 +1,4 @@
-mport requests
+Import requests
 import streamlit as st
 
 # Load credentials from Streamlit secrets
