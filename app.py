@@ -24,7 +24,7 @@ with tabs[0]:
     df = pd.DataFrame(data)
     selected_user = st.selectbox("Select Jainam Account", df["client_code"])
     creds = df[df["client_code"] == selected_user].iloc[0]
-    token = jainam.login_jainam(creds["client_code"], creds["password"], creds["dob"])
+    token = jainam_login(creds["client_code"], creds["password"], creds["dob"])
     if token:
         st.success("Logged in to Jainam")
         holdings = jainam.get_holdings(token)
