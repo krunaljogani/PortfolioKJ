@@ -43,24 +43,31 @@ def get_jainam_session(user_id, auth_code, api_secret):
         return None
 
 def get_holdings(user_session):
-    BASE_URL_HOLDINGS = "https://protrade.jainam.in/api/"  # Update if different
+    BASE_URL_HOLDINGS = "https://protrade.jainam.in/api/"
     url = f"{BASE_URL_HOLDINGS}holdings/"
-    
+
     headers = {
         "Authorization": f"Bearer {user_session}"
     }
-    
+
     res = requests.get(url, headers=headers)
 
-    if res.status_code == 200:
+    # Ensure we received a JSON response
+    content_type = res.headers.get("Content-Type", "")
+    if "application/json" not in content_type:
+        st.error(f"Unexpected response format:\n{res.text[:500]}")
+        return None
+
+    try:
         data = res.json()
-        if data.get("status") == "Ok":
-            return data.get("result", [])
-        else:
-            st.error(f"API Error: {data.get('message')}")
-            return None
+    except Exception as e:
+        st.error(f"Failed to parse JSON response:\n{res.text[:500]}")
+        return None
+
+    if data.get("status") == "Ok":
+        return data.get("result", [])
     else:
-        st.error(f"HTTP Error: {res.status_code} - {res.text}")
+        st.error(f"API Error: {data.get('message')}")
         return None
 
 st.title("📊 Jainam Login Demo")
