@@ -18,7 +18,7 @@ REDIRECT_URL = "https://portfolioKJ.streamlit.app"
 JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
 
 # --- Get query params from redirect ---
-query_params = st.experimental_get_query_params()
+query_params = st.query_params.()
 user_id = query_params.get("userId", [None])[0]
 auth_code = query_params.get("authCode", [None])[0]
 
