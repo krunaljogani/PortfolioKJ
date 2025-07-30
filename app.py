@@ -11,26 +11,16 @@ st.title("📊 Multi-Broker Portfolio Tracker")
 tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
 with tabs[0]:
-    st.header("🔐 Jainam Accounts")
-    import streamlit as st
-    import pandas as pd
-    
-    accounts = st.secrets["jainam_accounts"]
-    
-    data = []
-    for code in accounts:
-        info = accounts[code]
-        data.append({"client_code": code, "password": info["password"], "dob": info["dob"]})
 
-    df = pd.DataFrame(data)
-    selected_user = st.selectbox("Select Jainam Account", df["client_code"])
-    creds = df[df["client_code"] == selected_user].iloc[0]
-    token = jainam.jainam_login(creds["client_code"], creds["password"], creds["dob"])
-    if token:
+    
+    for label, creds in st.secrets["jainam_sso"].items():
+        st.subheader(f"🔑 Account: {label}")
+        result = jainam.jainam_sso_login(creds["user_id"], creds["auth_code"])
+        if result:
         st.success("Logged in to Jainam")
         holdings = jainam.get_holdings(token)
         st.dataframe(pd.DataFrame(holdings))
-    else:
+        else:
         st.error("Login failed")
 
 with tabs[1]:
