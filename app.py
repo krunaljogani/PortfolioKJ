@@ -9,18 +9,40 @@ st.title("📊 Multi-Broker Portfolio Tracker")
 
 tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
+
+
 with tabs[0]:
 
     
-    for label, creds in st.secrets["jainam_sso"].items():
-        st.subheader(f"🔑 Account: {label}")
-        result = jainam.jainam_sso_login(creds["user_id"], creds["auth_code"])
-        if result:
-            st.success("Logged in to Jainam")
-            holdings = jainam.get_holdings(token)
-            st.dataframe(pd.DataFrame(holdings))
+   APP_CODE = "DDuniRrYMgkPblF"
+REDIRECT_URL = "https://portfolioKJ.streamlit.app"
+JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
+
+# --- Get query params from redirect ---
+query_params = st.experimental_get_query_params()
+user_id = query_params.get("userId", [None])[0]
+auth_code = query_params.get("authCode", [None])[0]
+
+# --- Function to get user session ---
+def get_jainam_session(user_id, auth_code, api_secret):
+    if not all([user_id, auth_code, api_secret]):
+        return None
+    raw_string = user_id + auth_code + api_secret
+    checksum = hashlib.sha256(raw_string.encode()).hexdigest()
+
+    try:
+        response = requests.post(
+            "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails",
+            json={"checkSum": checksum}
+        )
+        if response.status_code == 200:
+            return response.json()
         else:
-            st.error("Login failed")
+            st.error(f"API error: {response.status_code} - {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"Exception occurred: {str(e)}")
+        return None
 
 with tabs[1]:
     st.header("🔐 Zerodha")
