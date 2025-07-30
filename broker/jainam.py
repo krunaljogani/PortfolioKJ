@@ -4,8 +4,8 @@ import pandas as pd
 
 # Load credentials from Streamlit secrets
 API = st.secrets["jainam_api"]
-API_KEY = API.["key"]
-SECRET_KEY = API.["secret"]
+API_KEY = API.("key")
+SECRET_KEY = API.("secret")
 
 def jainam_login(client_code, password, dob):
     url = "https://protrade.jainam.in/api/v2/login"
