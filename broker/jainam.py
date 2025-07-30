@@ -1,14 +1,15 @@
-import requests
 import streamlit as st
-import pandas as pd
-
-# Load credentials from Streamlit secrets
-API_KEY = st.secrets["jainam_api"]["key"]
-SECRET_KEY = st.secrets["jainam_api"]["secret"]
+import requests
 
 def jainam_login(client_code, password, dob):
-    url = "https://protrade.jainam.in/api/v2/login"
+    try:
+        API_KEY = st.secrets["jainam_api"]["key"]
+        SECRET_KEY = st.secrets["jainam_api"]["secret"]
+    except Exception as e:
+        st.error(f"Error loading API credentials: {e}")
+        return None
 
+    url = "https://protrade.jainam.in/api/v2/login"
     headers = {
         "X-API-Key": API_KEY,
         "X-API-Secret": SECRET_KEY,
@@ -18,16 +19,15 @@ def jainam_login(client_code, password, dob):
     payload = {
         "clientcode": client_code,
         "password": password,
-        "dob": dob  # Format: YYYY-MM-DD
+        "dob": dob
     }
 
-    response = requests.post(url, headers=headers, json=payload)
-
-    if response.status_code == 200:
-        data = response.json()
-        return data["data"]["token"]  # You may store this for future requests
-    else:
-        st.error(f"Login failed: {response.text}")
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        return response.json().get("data", {}).get("token")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Request failed for {client_code}: {e}")
         return None
         
 def get_holdings(token):
