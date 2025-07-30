@@ -14,7 +14,7 @@ tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
 with tabs[0]:
     
-   APP_CODE = "DDuniRrYMgkPblF"
+APP_CODE = "DDuniRrYMgkPblF"
 REDIRECT_URL = "https://portfolioKJ.streamlit.app/"
 JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
 
@@ -67,7 +67,7 @@ if user_id and auth_code:
         st.error("❌ Failed to get session from Jainam")
 else:
     if st.button("🔐 Login to Jainam"):
-        st.markdown(f'<meta http-equiv="refresh" content="0;url={JAINAM_LOGIN_URL}">', unsafe_allow_html=True)
+        st.markdown(f"[🔐 Click here to login to Jainam]({JAINAM_LOGIN_URL})")
 with tabs[1]:
     st.header("🔐 Zerodha")
     tokens = load_tokens()
