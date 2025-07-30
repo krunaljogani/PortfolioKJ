@@ -43,16 +43,24 @@ def get_jainam_session(user_id, auth_code, api_secret):
         return None
 
 def get_holdings(user_session):
-    headers = {"Authorization": user_session}
-    res = requests.get(
-        "https://protrade.jainam.in/omt/api-order-rest/v1/holdings/cnc",
-        headers=headers
-    )
-    st.write(res)
+    BASE_URL_HOLDINGS = "https://protrade.jainam.in/api/"  # Update if different
+    url = f"{BASE_URL_HOLDINGS}holdings/"
+    
+    headers = {
+        "Authorization": f"Bearer {user_session}"
+    }
+    
+    res = requests.get(url, headers=headers)
+
     if res.status_code == 200:
-        return res.json()
+        data = res.json()
+        if data.get("status") == "Ok":
+            return data.get("result", [])
+        else:
+            st.error(f"API Error: {data.get('message')}")
+            return None
     else:
-        st.error(f"Holdings fetch failed: {res.status_code} - {res.text}")
+        st.error(f"HTTP Error: {res.status_code} - {res.text}")
         return None
 
 st.title("📊 Jainam Login Demo")
