@@ -35,6 +35,7 @@ def get_jainam_session(user_id, auth_code, api_secret):
         return res.json()
     else:
         st.error(f"Session fetch failed: {res.status_code} - {res.text}")
+        st.write("Loaded secret:", st.secrets["jainam_api"]["secret"])
         return None
 def get_holdings(user_session):
     headers = {"Authorization": user_session}
