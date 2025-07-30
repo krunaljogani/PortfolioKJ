@@ -1,5 +1,6 @@
 import requests
 import streamlit as st
+import pandas as pd
 
 # Load credentials from Streamlit secrets
 API_KEY = st.secrets["jainam_api"]["key"]
