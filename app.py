@@ -9,12 +9,6 @@ st.title("📊 Multi-Broker Portfolio Tracker")
 
 tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
-from broker import jainam
-
-st.title("Jainam Portfolio Viewer")
-
-accounts = st.secrets["jainam_accounts"]
-
 with tabs[0]:
     st.header("🔐 Jainam Accounts")
     import streamlit as st
