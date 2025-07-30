@@ -12,11 +12,10 @@ tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
 
 
-with tabs[0]:
-    
-APP_CODE = "DDuniRrYMgkPblF"
-REDIRECT_URL = "https://portfolioKJ.streamlit.app/"
-JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
+with tabs[0]: 
+    APP_CODE = "DDuniRrYMgkPblF"
+    REDIRECT_URL = "https://portfolioKJ.streamlit.app/"
+    JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
 
 # --- Get query params from redirect ---
 user_id = st.query_params.get("userId", [None])[0]
