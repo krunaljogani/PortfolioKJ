@@ -69,6 +69,8 @@ if user_id and auth_code:
             st.json(holdings)
     else:
         st.error("❌ Failed to get session from Jainam")
+        st.text(f"Status: {res.status_code}")
+        st.text(f"Response: {res.text}")
 else:
     if st.button("🔐 Login to Jainam"):
         st.markdown(f"[🔐 Click here to login to Jainam]({JAINAM_LOGIN_URL})")
