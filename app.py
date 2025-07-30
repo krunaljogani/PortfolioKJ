@@ -3,7 +3,6 @@ import pandas as pd
 from broker import jainam, zerodha, nuvama_mock
 import json
 from broker.zerodha import ZerodhaClient, load_tokens, save_tokens
-from broker.jainam import jainam_login
 
 st.set_page_config(page_title="Multi-Broker Portfolio", layout="wide")
 st.title("📊 Multi-Broker Portfolio Tracker")
