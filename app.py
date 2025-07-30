@@ -16,30 +16,32 @@ tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
 with tabs[0]: 
     APP_CODE = "DDuniRrYMgkPblF"
-    REDIRECT_URL = "https://portfolioKJ.streamlit.app/"
-    JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
+REDIRECT_URL = "https://portfolioKJ.streamlit.app"
+JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
 
-# --- Get query params from redirect ---
-user_id = st.query_params.get("userId")
-auth_code = st.query_params.get("authCode")
+query_params = st.experimental_get_query_params()
+user_id = query_params.get("userId", [None])[0]
+auth_code = query_params.get("authCode", [None])[0]
 
-# --- Function to get user session ---
+if user_id is not None:
+    user_id = str(user_id)
+if auth_code is not None:
+    auth_code = str(auth_code)
+
 def get_jainam_session(user_id, auth_code, api_secret):
     raw_string = str(user_id) + str(auth_code) + str(api_secret)
-    st.write(raw_string)
     checksum = hashlib.sha256(raw_string.encode()).hexdigest()
-    st.write(checksum)
+
     res = requests.post(
         "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails",
-        json={"checkSum": checksum},
-        headers={"Content-Type": "application/json"}
+        json={"checkSum": checksum}
     )
     if res.status_code == 200:
         return res.json()
     else:
         st.error(f"Session fetch failed: {res.status_code} - {res.text}")
-        
         return None
+
 def get_holdings(user_session):
     headers = {"Authorization": user_session}
     res = requests.get(
@@ -69,8 +71,6 @@ if user_id and auth_code:
             st.json(holdings)
     else:
         st.error("❌ Failed to get session from Jainam")
-        st.text(f"Status: {session_response.status_code}")
-        st.text(f"Response: {session_response.text}")
 else:
     if st.button("🔐 Login to Jainam"):
         st.markdown(f"[🔐 Click here to login to Jainam]({JAINAM_LOGIN_URL})")
