@@ -1,33 +1,27 @@
 import streamlit as st
 import requests
+import hashlib
 
-def jainam_login(client_code, password, dob):
-    try:
-        API_KEY = st.secrets["jainam_api"]["key"]
-        SECRET_KEY = st.secrets["jainam_api"]["secret"]
-    except Exception as e:
-        st.error(f"Error loading API credentials: {e}")
-        return None
+def generate_checksum(user_id, auth_code, api_secret):
+    base_string = user_id + auth_code + api_secret
+    return hashlib.sha256(base_string.encode()).hexdigest()
 
-    url = "https://protrade.jainam.in/api/v2/login"
-    headers = {
-        "X-API-Key": API_KEY,
-        "X-API-Secret": SECRET_KEY,
-        "Content-Type": "application/json"
-    }
+def jainam_sso_login(user_id, auth_code):
+    api_secret = st.secrets["jainam_api"]["api_secret"]
+    checksum = generate_checksum(user_id, auth_code, api_secret)
 
     payload = {
-        "clientcode": client_code,
-        "password": password,
-        "dob": dob
+        "checkSum": checksum
     }
 
+    url = "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails"
+
     try:
-        response = requests.post(url, headers=headers, json=payload)
+        response = requests.post(url, json=payload)
         response.raise_for_status()
-        return response.json().get("data", {}).get("token")
+        return response.json()
     except requests.exceptions.RequestException as e:
-        st.error(f"Request failed for {client_code}: {e}")
+        st.error(f"SSO login failed for {user_id}: {e}")
         return None
         
 def get_holdings(token):
