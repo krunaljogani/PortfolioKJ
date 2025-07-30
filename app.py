@@ -6,7 +6,7 @@ from broker.zerodha import ZerodhaClient, load_tokens, save_tokens
 
 st.set_page_config(page_title="Multi-Broker Portfolio", layout="wide")
 st.title("📊 Multi-Broker Portfolio Tracker")
-api_secret = st.secrets["jainam_api"].["secret"]
+api_secret = st.secrets["jainam_api"]["secret"]
 tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
 
