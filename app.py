@@ -26,6 +26,9 @@ auth_code = st.query_params.get("authCode", [None])[0]
 # --- Function to get user session ---
 def get_jainam_session(user_id, auth_code, api_secret):
     raw_string = user_id + auth_code + api_secret
+    st.write(user_id)
+    st.write(auth_code)
+    st.write(api_secret)
     st.write(raw_string)
     checksum = hashlib.sha256(raw_string.encode()).hexdigest()
     st.write(checksum)
