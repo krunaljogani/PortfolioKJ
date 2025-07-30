@@ -15,17 +15,6 @@ st.title("Jainam Portfolio Viewer")
 
 accounts = st.secrets["jainam_accounts"]
 
-for label in accounts:
-    creds = accounts[label]  # e.g. JAIN001
-    token = jainam.jainam_login(
-        creds["client_code"],
-        creds["password"],
-        creds["dob"]
-    )
-    if token:
-        st.success(f"{creds['client_code']} logged in successfully")
-    else:
-        st.error(f"{creds['client_code']} failed to login")
 with tabs[0]:
     st.header("🔐 Jainam Accounts")
     import streamlit as st
