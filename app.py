@@ -17,11 +17,11 @@ with tabs[0]:
         st.subheader(f"🔑 Account: {label}")
         result = jainam.jainam_sso_login(creds["user_id"], creds["auth_code"])
         if result:
-        st.success("Logged in to Jainam")
-        holdings = jainam.get_holdings(token)
-        st.dataframe(pd.DataFrame(holdings))
+            st.success("Logged in to Jainam")
+            holdings = jainam.get_holdings(token)
+            st.dataframe(pd.DataFrame(holdings))
         else:
-        st.error("Login failed")
+            st.error("Login failed")
 
 with tabs[1]:
     st.header("🔐 Zerodha")
