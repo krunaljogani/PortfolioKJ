@@ -8,6 +8,7 @@ from broker.zerodha import ZerodhaClient, load_tokens, save_tokens
 
 st.set_page_config(page_title="Multi-Broker Portfolio", layout="wide")
 st.title("📊 Multi-Broker Portfolio Tracker")
+st.write("Loaded secret:", st.secrets["jainam_api"]["secret"])
 api_secret = st.secrets["jainam_api"]["secret"]
 tabs = st.tabs(["Jainam", "Zerodha", "Nuvama"])
 
@@ -35,7 +36,7 @@ def get_jainam_session(user_id, auth_code, api_secret):
         return res.json()
     else:
         st.error(f"Session fetch failed: {res.status_code} - {res.text}")
-        st.write("Loaded secret:", st.secrets["jainam_api"]["secret"])
+        
         return None
 def get_holdings(user_session):
     headers = {"Authorization": user_session}
