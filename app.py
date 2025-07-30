@@ -48,6 +48,7 @@ def get_holdings(user_session):
         "https://protrade.jainam.in/omt/api-order-rest/v1/holdings/cnc",
         headers=headers
     )
+    st.write(res)
     if res.status_code == 200:
         return res.json()
     else:
