@@ -15,7 +15,7 @@ def jainam_sso_login(user_id, auth_code):
         "checkSum": checksum
     }
 
-    url = "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails" + app_code
+    url = "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails"
 
     try:
         response = requests.post(url, json=payload)
