@@ -31,6 +31,7 @@ def get_jainam_session(user_id, auth_code, api_secret):
     res = requests.post(
         "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails",
         json={"checkSum": checksum}
+        headers={"Content-Type": "application/json"}
     )
     if res.status_code == 200:
         return res.json()
