@@ -23,25 +23,50 @@ auth_code = st.query_params.get("authCode", [None])[0]
 
 # --- Function to get user session ---
 def get_jainam_session(user_id, auth_code, api_secret):
-    if not all([user_id, auth_code, api_secret]):
-        return None
     raw_string = user_id + auth_code + api_secret
     checksum = hashlib.sha256(raw_string.encode()).hexdigest()
 
-    try:
-        response = requests.post(
-            "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails",
-            json={"checkSum": checksum}
-        )
-        if response.status_code == 200:
-            return response.json()
-        else:
-            st.error(f"API error: {response.status_code} - {response.text}")
-            return None
-    except Exception as e:
-        st.error(f"Exception occurred: {str(e)}")
+    res = requests.post(
+        "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails",
+        json={"checkSum": checksum}
+    )
+    if res.status_code == 200:
+        return res.json()
+    else:
+        st.error(f"Session fetch failed: {res.status_code} - {res.text}")
+        return None
+def get_holdings(user_session):
+    headers = {"Authorization": user_session}
+    res = requests.get(
+        "https://protrade.jainam.in/oms/scrip/holding",
+        headers=headers
+    )
+    if res.status_code == 200:
+        return res.json()
+    else:
+        st.error(f"Holdings fetch failed: {res.status_code} - {res.text}")
         return None
 
+st.title("📊 Jainam Login Demo")
+
+if user_id and auth_code:
+    st.success("🔐 Auth token received from Jainam")
+    api_secret = st.secrets["jainam_api"]["secret"]
+    session_response = get_jainam_session(user_id, auth_code, api_secret)
+    if session_response and "userSession" in session_response:
+        user_session = session_response["userSession"]
+        st.success("✅ Session token retrieved")
+        st.code(user_session, language="text")
+
+        holdings = get_holdings(user_session)
+        if holdings:
+            st.subheader("📈 Holdings")
+            st.json(holdings)
+    else:
+        st.error("❌ Failed to get session from Jainam")
+else:
+    if st.button("🔐 Login to Jainam"):
+        st.markdown(f'<meta http-equiv="refresh" content="0;url={JAINAM_LOGIN_URL}">', unsafe_allow_html=True)
 with tabs[1]:
     st.header("🔐 Zerodha")
     tokens = load_tokens()
