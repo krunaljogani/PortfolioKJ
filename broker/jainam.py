@@ -8,13 +8,14 @@ def generate_checksum(user_id, auth_code, api_secret):
 
 def jainam_sso_login(user_id, auth_code):
     api_secret = st.secrets["jainam_api"]["api_secret"]
+    app_code = st.secrets["jainam_api"]["app_code"]
     checksum = generate_checksum(user_id, auth_code, api_secret)
 
     payload = {
         "checkSum": checksum
     }
 
-    url = "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails"
+    url = "https://protrade.jainam.in/omt/auth/sso/vendor/getUserDetails" + app_code
 
     try:
         response = requests.post(url, json=payload)
