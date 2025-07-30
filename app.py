@@ -20,8 +20,8 @@ with tabs[0]:
     JAINAM_LOGIN_URL = f"https://protrade.jainam.in/?appcode={APP_CODE}&redirect_url={REDIRECT_URL}"
 
 # --- Get query params from redirect ---
-user_id = st.query_params.get("userId", [None])
-auth_code = st.query_params.get("authCode", [None])
+user_id = st.query_params.get("userId", [None])[0]
+auth_code = st.query_params.get("authCode", [None])[0]
 
 # --- Function to get user session ---
 def get_jainam_session(user_id, auth_code, api_secret):
