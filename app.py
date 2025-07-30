@@ -45,7 +45,7 @@ def get_jainam_session(user_id, auth_code, api_secret):
 def get_holdings(user_session):
     headers = {"Authorization": user_session}
     res = requests.get(
-        "https://protrade.jainam.in/oms/scrip/holding",
+        "https://protrade.jainam.in/omt/api-order-rest/v1/holdings/cnc",
         headers=headers
     )
     if res.status_code == 200:
