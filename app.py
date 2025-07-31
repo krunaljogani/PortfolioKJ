@@ -78,7 +78,7 @@ def get_holdings(user_session):
                 "Current Price":0,
                 "Buy Price": averageTradedPrice,
                 "Buy Value": averageTradedPrice*totalQuantity,
-                "Current Value: 0,
+                "Current Value": 0,
                 "Day PnL": 0,
                 "Total PnL":0,
             })
