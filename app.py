@@ -73,7 +73,7 @@ def get_holdings(user_session):
             #ex_details = val.get("exDetails", [])
             
             rows.append({
-                "Share": get("formattedInstrumentName"),
+                "Share": item.get("formattedInstrumentName"),
                 "Total Qty": totalQuantity,
                 "Current Price":0,
                 "Buy Price": averageTradedPrice,
