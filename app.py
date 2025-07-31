@@ -65,6 +65,7 @@ def get_holdings(user_session):
         return None
 
     if data.get("status") == "Ok":
+        st.write("result")
         return data.get("result", [])     
     else:
         st.error(f"API Error: {data.get('message')}")
