@@ -83,7 +83,7 @@ def get_holdings(user_session):
             })
         
         df = pd.DataFrame(rows)
-        df.loc['Total']= df.sum(axis=1)
+        df.loc['Total']= df.sum(axis=3)
         st.dataframe(df, use_container_width=True) 
         return data.get("result", [])
     else:
