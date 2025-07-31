@@ -65,8 +65,26 @@ def get_holdings(user_session):
         return None
 
     if data.get("status") == "Ok":
-        st.write("result")
-        return data.get("result", [])     
+        holdings = json_data.get("result", [])
+        rows = []
+    
+        for item in holdings:
+            #val = item.get("holdingVal", {})
+            #ex_details = val.get("exDetails", [])
+            
+            rows.append({
+                "Share": formattedInstrumentName,
+                "Total Qty": totalQuantity,
+                "Current Price":0,
+                "Buy Price": averageTradedPrice,
+                "Buy Value": averageTradedPrice*totalQuantity,
+                "Current Value: 0,
+                "Day PnL": 0,
+                "Total PnL":0,
+            })
+    
+        df = pd.DataFrame(rows)
+        st.dataframe(df, use_container_width=True) 
     else:
         st.error(f"API Error: {data.get('message')}")
         return None
