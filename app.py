@@ -84,6 +84,7 @@ def get_holdings(user_session):
     
         df = pd.DataFrame(rows)
         st.dataframe(df, use_container_width=True) 
+        return data.get("result", [])
     else:
         st.error(f"API Error: {data.get('message')}")
         return None
