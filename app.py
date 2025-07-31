@@ -40,7 +40,55 @@ def get_jainam_session(user_id, auth_code, api_secret):
     else:
         st.error(f"Session fetch failed: {res.status_code} - {res.text}")
         return None
+        
+def get_holdings(user_session):
+    BASE_URL_HOLDINGS = "https://protrade.jainam.in/"
+    url = f"{BASE_URL_HOLDINGS}api/ho-rest/holdings"
 
+    headers = {
+        "Authorization": f"Bearer {user_session}"
+    }
+
+    res = requests.get(url, headers=headers)
+
+    # Ensure we received a JSON response
+    content_type = res.headers.get("Content-Type", "")
+    if "application/json" not in content_type:
+        st.error(f"Unexpected response format:\n{res.text[:500]}")
+        return None
+
+    try:
+        data = res.json()
+    except Exception as e:
+        st.error(f"Failed to parse JSON response:\n{res.text[:500]}")
+        return None
+
+    if data.get("status") == "Ok":
+        holdings = data.get("result", [])
+        rows = []
+    
+        for item in holdings:
+            #val = item.get("holdingVal", {})
+            #ex_details = val.get("exDetails", [])
+            
+            rows.append({
+                "Share": item.get("isin"),
+                "Total Qty": item.get("holdQty"),
+                "Current Price":item.get("symbol")[0].get("ltp"),
+                "Buy Price": item.get("buyPrice"),
+                "Buy Value": item.get("buyPrice")*item.get("holdQty"),
+                "Current Value": 0,
+                "Day PnL": 0,
+                "Total PnL":0,
+            })
+    
+        df = pd.DataFrame(rows)
+        st.dataframe(df, use_container_width=True) 
+    else:
+        st.error(f"API Error: {data.get('message')}")
+        return None
+
+'''
 def get_holdings(user_session):
     
     BASE_URL_HOLDINGS = "https://protrade.jainam.in/"
@@ -88,17 +136,17 @@ def get_holdings(user_session):
     else:
         st.error(f"API Error: {data.get('message')}")
         return None
-
+'''
 st.title("📊 Jainam Login Demo")
 
 if user_id and auth_code:
-    st.success("🔐 Auth token received from Jainam")
+    #st.success("🔐 Auth token received from Jainam")
     api_secret = st.secrets["jainam_api"]["secret"]
     session_response = get_jainam_session(user_id, auth_code, api_secret)
     if session_response and session_response.get("result") and "accessToken" in session_response["result"][0]:
         user_session = session_response["result"][0]["accessToken"]
-        st.success("✅ Session token retrieved")
-        st.code(user_session, language="text")
+        #st.success("✅ Session token retrieved")
+        #st.code(user_session, language="text")
         holdings = get_holdings(user_session)
         if holdings:
             st.subheader("📈 Holdings")
