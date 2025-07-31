@@ -80,6 +80,7 @@ def get_holdings(user_session):
                 "Current Value": float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")),
                 "Day PnL": 0,
                 "Total PnL": float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")) - float(item.get("buyPrice"))*float(item.get("netQty")),
+                "Broker":"Jainam" + user_id
             })
         
         df = pd.DataFrame(rows)
