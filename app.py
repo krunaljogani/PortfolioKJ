@@ -80,19 +80,16 @@ def get_holdings(user_session):
                 "Current Value": float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")),
                 "Day PnL": 0,
                 "Total PnL": float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")) - float(item.get("buyPrice"))*float(item.get("netQty")),
-                "Broker":"Jainam" + user_id
+                "Broker":"Jainam - " + user_id
             })
         
         df = pd.DataFrame(rows)
         # ➕ Add Total Row
         total_row = {
             "Share": "TOTAL",
-            "Total Qty": "",
-            "Current Price": "",
-            "Buy Price": "",
             "Buy Value": df["Buy Value"].sum(),
             "Current Value": df["Current Value"].sum(),
-            "Day PnL": "",
+            "Day PnL": df["Day PnL"].sum(),
             "Total PnL": df["Total PnL"].sum()
         }
 
