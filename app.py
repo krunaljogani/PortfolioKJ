@@ -65,8 +65,41 @@ def get_holdings(user_session):
         return None
 
     if data.get("status") == "Ok":
-        return None
-        #data.get("result", [])
+        holdings = data.get("result", [])
+        return holdings
+        for item in holdings:
+        val = item.get("holdingVal", {})
+        ex_details = val.get("exDetails", [])
+        '''
+        # Use only NSE row if available, else fallback to first exchange
+        symbol = ""
+        exchange = ""
+        for ex in ex_details:
+            if ex["exchange"] == "NSE":
+                symbol = ex["symbol"]
+                exchange = ex["exchange"]
+                break
+        else:
+            if ex_details:
+                symbol = ex_details[0]["symbol"]
+                exchange = ex_details[0]["exchange"]
+
+        rows.append({
+            "ISIN": val.get("isin"),
+            "Symbol": symbol,
+            "Exchange": exchange,
+            "Buy Price": val.get("buyPrice"),
+            "Total Qty": val.get("totalQty"),
+            "Sellable Qty": val.get("sellableQty"),
+            "Day PnL": val.get("dayPnl"),
+            "LTP": val.get("ltp"),
+        })
+
+    df = pd.DataFrame(rows)
+    st.dataframe(df, use_container_width=True)
+    ''' 
+
+    
     else:
         st.error(f"API Error: {data.get('message')}")
         return None
