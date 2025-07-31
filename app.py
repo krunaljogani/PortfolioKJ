@@ -83,7 +83,19 @@ def get_holdings(user_session):
             })
         
         df = pd.DataFrame(rows)
-        df.loc['Total']= df.sum(axis=2)
+        # ➕ Add Total Row
+        total_row = {
+            "Share": "TOTAL",
+            "Total Qty": "",
+            "Current Price": "",
+            "Buy Price": "",
+            "Buy Value": df["Buy Value"].sum(),
+            "Current Value": df["Current Value"].sum(),
+            "Day PnL": "",
+            "Total PnL": df["Total PnL"].sum()
+        }
+
+df.loc[len(df)] = total_row  # Append the total row
         st.dataframe(df, use_container_width=True) 
         return data.get("result", [])
     else:
