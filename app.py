@@ -95,7 +95,7 @@ def get_holdings(user_session):
 
         df.loc[len(df)] = total_row  # Append the total row
         st.dataframe(df, use_container_width=True) 
-        return data.get("result", [])
+        #return data.get("result", [])
     else:
         st.error(f"API Error: {data.get('message')}")
         return None
