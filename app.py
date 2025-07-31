@@ -43,7 +43,7 @@ def get_jainam_session(user_id, auth_code, api_secret):
         return None
 
 def get_holdings(user_session):
-    print("Token being used:", user_session)
+    
     BASE_URL_HOLDINGS = "https://protrade.jainam.in/"
     url = f"{BASE_URL_HOLDINGS}omt/api-order-rest/v1/holdings/cnc"
 
