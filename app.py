@@ -88,55 +88,7 @@ def get_holdings(user_session):
         st.error(f"API Error: {data.get('message')}")
         return None
 
-"""
-def get_holdings(user_session):
-    
-    BASE_URL_HOLDINGS = "https://protrade.jainam.in/"
-    url = f"{BASE_URL_HOLDINGS}omt/api-order-rest/v1/holdings/cnc"
 
-    headers = {
-        "Authorization": f"Bearer {user_session}"
-    }
-
-    res = requests.get(url, headers=headers)
-
-    # Ensure we received a JSON response
-    content_type = res.headers.get("Content-Type", "")
-    if "application/json" not in content_type:
-        st.error(f"Unexpected response format:\n{res.text[:500]}")
-        return None
-
-    try:
-        data = res.json()
-    except Exception as e:
-        st.error(f"Failed to parse JSON response:\n{res.text[:500]}")
-        return None
-
-    if data.get("status") == "Ok":
-        holdings = data.get("result", [])
-        rows = []
-    
-        for item in holdings:
-            #val = item.get("holdingVal", {})
-            #ex_details = val.get("exDetails", [])
-            
-            rows.append({
-                "Share": item.get("formattedInstrumentName"),
-                "Total Qty": item.get("totalQuantity"),
-                "Current Price":item.get("previousDayClose"),
-                "Buy Price": item.get("averageTradedPrice"),
-                "Buy Value": item.get("averageTradedPrice")*item.get("totalQuantity"),
-                "Current Value": 0,
-                "Day PnL": 0,
-                "Total PnL":0,
-            })
-    
-        df = pd.DataFrame(rows)
-        st.dataframe(df, use_container_width=True) 
-    else:
-        st.error(f"API Error: {data.get('message')}")
-        return None
-"""
 st.title("📊 Jainam Login Demo")
 
 if user_id and auth_code:
