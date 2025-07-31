@@ -75,7 +75,7 @@ def get_holdings(user_session):
             rows.append({
                 "Share": item.get("formattedInstrumentName"),
                 "Total Qty": item.get("totalQuantity"),
-                "Current Price":0,
+                "Current Price":item.get("previousDayClose"),
                 "Buy Price": item.get("averageTradedPrice"),
                 "Buy Value": item.get("averageTradedPrice")*item.get("totalQuantity"),
                 "Current Value": 0,
