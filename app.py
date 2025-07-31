@@ -78,8 +78,8 @@ if user_id and auth_code:
     session_response = get_jainam_session(user_id, auth_code, api_secret)
     if session_response and session_response.get("result") and "accessToken" in session_response["result"][0]:
         user_session = session_response["result"][0]["accessToken"]
-        st.success("✅ Session token retrieved")
-        st.code(user_session, language="text")
+        #st.success("✅ Session token retrieved")
+        #st.code(user_session, language="text")
         holdings = get_holdings(user_session)
         if holdings:
             st.subheader("📈 Holdings")
