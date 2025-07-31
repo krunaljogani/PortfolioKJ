@@ -73,7 +73,7 @@ def get_holdings(user_session):
 st.title("📊 Jainam Login Demo")
 
 if user_id and auth_code:
-    st.success("🔐 Auth token received from Jainam")
+    #st.success("🔐 Auth token received from Jainam")
     api_secret = st.secrets["jainam_api"]["secret"]
     session_response = get_jainam_session(user_id, auth_code, api_secret)
     if session_response and session_response.get("result") and "accessToken" in session_response["result"][0]:
