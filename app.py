@@ -95,7 +95,7 @@ def get_holdings(user_session):
             "Total PnL": df["Total PnL"].sum()
         }
 
-df.loc[len(df)] = total_row  # Append the total row
+        df.loc[len(df)] = total_row  # Append the total row
         st.dataframe(df, use_container_width=True) 
         return data.get("result", [])
     else:
