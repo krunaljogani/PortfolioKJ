@@ -72,8 +72,8 @@ def get_holdings(user_session):
             #ex_details = val.get("exDetails", [])
             
             rows.append({
-                "Share": item.get("isin"),
-                "Total Qty": item.get("holdQty"),
+                "Share": item.get("symbol", [{}])[0].get("tradingSymbol"),
+                "Total Qty": item.get("netQty"),
                 "Current Price":item.get("symbol", [{}])[0].get("ltp"),
                 "Buy Price": item.get("buyPrice"),
                 "Buy Value": item.get("buyPrice"),
