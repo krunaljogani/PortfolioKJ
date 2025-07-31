@@ -81,8 +81,9 @@ def get_holdings(user_session):
                 "Day PnL": 0,
                 "Total PnL": float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")) - float(item.get("buyPrice"))*float(item.get("netQty")),
             })
-        df.loc['Total']= df.sum()
+        
         df = pd.DataFrame(rows)
+        df.loc['Total']= df.sum()
         st.dataframe(df, use_container_width=True) 
         return data.get("result", [])
     else:
