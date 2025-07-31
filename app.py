@@ -88,7 +88,7 @@ def get_holdings(user_session):
         st.error(f"API Error: {data.get('message')}")
         return None
 
-'''
+"""
 def get_holdings(user_session):
     
     BASE_URL_HOLDINGS = "https://protrade.jainam.in/"
@@ -136,7 +136,7 @@ def get_holdings(user_session):
     else:
         st.error(f"API Error: {data.get('message')}")
         return None
-'''
+"""
 st.title("📊 Jainam Login Demo")
 
 if user_id and auth_code:
