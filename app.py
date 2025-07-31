@@ -64,7 +64,7 @@ def get_holdings(user_session):
         return None
 
     if data.get("status") == "Ok":
-        holdings = data.get("result", [{}]).get("holdings")
+        holdings = data.get("result", [{}])[0].get("holdings")
         rows = []
     
         for item in holdings:
