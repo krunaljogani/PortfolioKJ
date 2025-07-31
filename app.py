@@ -76,8 +76,8 @@ def get_holdings(user_session):
                 "Total Qty": float(item.get("netQty")),
                 "Current Price": float(item.get("symbol", [{}])[0].get("ltp")),
                 "Buy Price": float(item.get("buyPrice")),
-                "Buy Value": BuyValue=float(item.get("buyPrice"))*float(item.get("netQty")),
-                "Current Value": CurrentValue=float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")),
+                "Buy Value": BuyValue = float(item.get("buyPrice"))*float(item.get("netQty")),
+                "Current Value": CurrentValue = float(item.get("symbol", [{}])[0].get("ltp"))*float(item.get("netQty")),
                 "Day PnL": 0,
                 "Total PnL": CurrentValue - BuyValue,
             })
